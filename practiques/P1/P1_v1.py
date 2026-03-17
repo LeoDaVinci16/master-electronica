@@ -80,7 +80,7 @@ def limitar(valor, vmin, vmax):
 # VARIABLES
 # -----------------------
 
-valor = 100
+valor = 0
 pas = 10
 
 print("Sistema iniciat")
@@ -116,6 +116,6 @@ while True:
     sleep(LOOP_DELAY)
 
     # rampa opcional
-    #valor += pas
-    #if valor >= DAC_MAX or valor <= DAC_MIN:
-    #    pas = -pas 
+    valor += pas
+    if valor >= DAC_MAX or valor <= DAC_MIN:
+        pas = -pas 

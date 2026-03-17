@@ -16,7 +16,7 @@ DAC_MAX = 255
 SAMPLES = 11
 DELAY = 0.005
 
-FILE_NAME = "mesures.csv"
+FILE_NAME = "lab_orange.csv"
 
 # -----------------------
 # INICIALITZACIÓ
@@ -74,7 +74,7 @@ for valor in range(0, DAC_MAX + 1):
 
     dac.write(valor)
 
-    sleep(0.05)  # temps perquè estabilitzi
+    sleep(0.001)  # temps perquè estabilitzi
 
     m12_bits = mediana_lectures_bits(adc12)
     m13_bits = mediana_lectures_bits(adc13)
@@ -101,5 +101,7 @@ for valor in range(0, DAC_MAX + 1):
 
 f.close()
 
+valor = 0
+dac.write(valor)
 print("Rampa completada")
 print("Fitxer guardat:", FILE_NAME) 
