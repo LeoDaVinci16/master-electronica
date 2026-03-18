@@ -35,8 +35,7 @@ adquisición.
 
 # Tension en carga
 ```{python}
-#| code-fold: true
-#| code-summary: "Show code"
+#| echo: false
 # Dictionaries for files
 
 data_files = {
@@ -78,9 +77,8 @@ fig1.update_layout(
     height=500
 )
 
-fig1.show()
+#fig1.show()
 fig1.write_image("V-carga.png", width=1000, height=600)
-
 ```
 
 ![](V-carga.png)
@@ -121,7 +119,7 @@ for color in data_files.keys():
 
 # Layout
 fig2.update_layout(
-    title="Tension en carga",
+    title="Tension en resistencia",
     xaxis_title="dac value (bit))",
     yaxis_title="Tension en carga (V)",
     template="plotly_white",
@@ -129,7 +127,7 @@ fig2.update_layout(
     height=500
 )
 
-fig2.show()
+#fig2.show()
 fig2.write_image("VR.png", width=1000, height=600)
 
 ```
@@ -173,7 +171,7 @@ for color in data_files.keys():
 
 # Layout
 fig3.update_layout(
-    title="Tension en carga",
+    title="Tension en led",
     xaxis_title="dac value (bit))",
     yaxis_title="Tension en carga (V)",
     template="plotly_white",
@@ -181,7 +179,7 @@ fig3.update_layout(
     height=500
 )
 
-fig3.show()
+#fig3.show()
 fig3.write_image("Vled.png", width=1000, height=600)
 ```
 
@@ -291,10 +289,8 @@ figVI.update_layout(
     height=500
 )
 
-figVI.show()
-
+#figVI.show()
 figVI.write_image("Corba V-I.png", width=1000, height=600)
-
 ```
 
 ![](Corba V-I.png)
