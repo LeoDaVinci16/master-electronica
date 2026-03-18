@@ -24,7 +24,188 @@ adquisición.
 
 Los resultados pueden ser similares a los que aparecen en el apartado de resultados y que corresponden a un LED verde. Corresponden las gráficas a las curvas paramétricas de tensión en la carga, en la resistencia y en el LED respecto a la corriente inyectada por la fuente.
 
+# Tension en carga
 ```{python}
+#| code-fold: true
+#| code-summary: "Show code"
+# Dictionaries for files
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import plotly.graph_objects as go
+import os
+
+data_files = {
+    "red": "lab_red.csv",
+    "yellow": "lab_yellow.csv",
+    "blue": "lab_blue.csv",
+    "green": "lab_green.csv",
+    "orange": "lab_orange.csv"
+}
+
+# plt.figure(figsize=(10, 10))
+fig1 = go.Figure()
+
+for color in data_files.keys():
+    # Load normal data
+    df = pd.read_csv(data_files[color])
+    df['V_led'] = df['adc34_voltage'] * ((10000+2000)/2000) - df['adc35_voltage']
+    df['Iled'] = df['adc35_voltage'] / 100
+    df = df[df['Iled'] <= 0.02]
+    p_norm = np.poly1d(np.polyfit(df['V_led'], df['Iled'], 4))
+    df['fit'] = p_norm(df['V_led'])
+    
+    # Plot normal
+    #plt.plot(df['V_led'], df['dac_value'], label=f"{color} normal", linestyle='--', color=color)
+    
+    df['V_carga'] = df['adc34_voltage'] * ((10000+2000)/2000)
+
+    # Add traces
+    fig1.add_trace(go.Scatter(
+        x=df['dac_value'],
+        y=df['V_carga'],
+        mode='lines',
+        name=f'{color} ADC35',
+        line=dict(color=color, dash='solid')
+    ))
+
+    df['V_R'] = df['adc35_voltage']
+
+# Layout
+fig1.update_layout(
+    title="Tension en carga",
+    xaxis_title="dac value (bit))",
+    yaxis_title="Tension en carga (V)",
+    template="plotly_white",
+    width=500,
+    height=500
+)
+
+fig1.show()
+```
+
+# Tension en resistencia
+```{python}
+#| code-fold: true
+#| code-summary: "Show code"
+# Dictionaries for files
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import plotly.graph_objects as go
+import os
+
+data_files = {
+    "red": "lab_red.csv",
+    "yellow": "lab_yellow.csv",
+    "blue": "lab_blue.csv",
+    "green": "lab_green.csv",
+    "orange": "lab_orange.csv"
+}
+
+# plt.figure(figsize=(10, 10))
+fig2 = go.Figure()
+
+for color in data_files.keys():
+    # Load normal data
+    df = pd.read_csv(data_files[color])
+    df['V_led'] = df['adc34_voltage'] * ((10000+2000)/2000) - df['adc35_voltage']
+    df['Iled'] = df['adc35_voltage'] / 100
+    df = df[df['Iled'] <= 0.02]
+    p_norm = np.poly1d(np.polyfit(df['V_led'], df['Iled'], 4))
+    df['fit'] = p_norm(df['V_led'])
+    
+    # Plot normal
+    #plt.plot(df['V_led'], df['dac_value'], label=f"{color} normal", linestyle='--', color=color)
+    
+    df['V_R'] = df['adc35_voltage']
+
+    # Add traces
+    fig2.add_trace(go.Scatter(
+        x=df['dac_value'],
+        y=df['V_R'],
+        mode='lines',
+        name=f'{color} ADC35',
+        line=dict(color=color, dash='solid')
+    ))
+
+# Layout
+fig2.update_layout(
+    title="Tension en carga",
+    xaxis_title="dac value (bit))",
+    yaxis_title="Tension en carga (V)",
+    template="plotly_white",
+    width=500,
+    height=500
+)
+
+fig2.show()
+```
+
+# Tension en led
+```{python}
+#| code-fold: true
+#| code-summary: "Show code"
+# Dictionaries for files
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import plotly.graph_objects as go
+import os
+
+data_files = {
+    "red": "lab_red.csv",
+    "yellow": "lab_yellow.csv",
+    "blue": "lab_blue.csv",
+    "green": "lab_green.csv",
+    "orange": "lab_orange.csv"
+}
+
+# plt.figure(figsize=(10, 10))
+fig1 = go.Figure()
+
+for color in data_files.keys():
+    # Load normal data
+    df = pd.read_csv(data_files[color])
+    df['V_led'] = df['adc34_voltage'] * ((10000+2000)/2000) - df['adc35_voltage']
+    df['Iled'] = df['adc35_voltage'] / 100
+    df = df[df['Iled'] <= 0.02]
+    p_norm = np.poly1d(np.polyfit(df['V_led'], df['Iled'], 4))
+    df['fit'] = p_norm(df['V_led'])
+    
+    # Plot normal
+    #plt.plot(df['V_led'], df['dac_value'], label=f"{color} normal", linestyle='--', color=color)
+    
+    df['V_led'] = df['adc34_voltage'] * ((10000+2000)/2000) - df['adc35_voltage']
+    # Add traces
+    fig1.add_trace(go.Scatter(
+        x=df['dac_value'],
+        y=df['V_led'],
+        mode='lines',
+        name=f'{color} ADC35',
+        line=dict(color=color, dash='solid')
+    ))
+
+# Layout
+fig1.update_layout(
+    title="Tension en carga",
+    xaxis_title="dac value (bit))",
+    yaxis_title="Tension en carga (V)",
+    template="plotly_white",
+    width=500,
+    height=500
+)
+
+fig1.show()
+```
+
+# Corba V-I
+
+```{python}
+#| echo: false
 # Dictionaries for files
 
 import pandas as pd
@@ -141,11 +322,11 @@ figVI.update_layout(
     height=500
 )
 
-fig1.show()
+#fig1.show()
 
-fig2.show()
+#fig2.show()
 
-fig3.show()
+#fig3.show()
 
 figVI.show()
 
