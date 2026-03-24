@@ -12,7 +12,7 @@ adc34.atten(ADC.ATTN_11DB)
 
 adc34.width(ADC.WIDTH_12BIT)
 
-freq = 50
+freq = 60 # Herz
 
 SAMPLES = 11
 
@@ -30,15 +30,15 @@ pwm_green = PWM(led_green, freq)
 #pwm_yellow = PWM(led_yellow, freq)
 
 # Create txt:
-file_name = f"mesures_P2_v1.csv"
+file_name = f"mesures_P2_v2.csv"
 f = open(file_name, "w")
-f.write("duty_cycle,bits\n")
+f.write("duty_cycle, dc_bits, voltage, v_bits\n")
 
 
 def mediana_lectures_bits(adc, n=11):
     valors = []
     for _ in range(n):
-        valors.append(adc.read())   # lectura 0–4095[web:26][web:29]
+        valors.append(adc.read())
         sleep(0.005)
     valors.sort()
     return valors[n // 2]
@@ -55,39 +55,32 @@ def bits_a_volts(bits):
 duty_cycle = 0 # en percentatge
 
 #while duty_cycle < 100:
-for duty_cycle in range(0, 100, 1):
+for duty_cycle in range(0, 100, 10):
     d = perc_a_volts(duty_cycle)
     pwm_red.duty(int(d))
     voltage_bits = mediana_lectures_bits(adc34)
     voltage_volts = bits_a_volts(voltage_bits)
-    
-    
-    
+
     # escriure línia CSV
     linea = "{},{:.3f}, {}, {}\n".format(
-        duty_cycle, d, voltage_bits, voltage_volts
+        duty_cycle, d, voltage_volts, voltage_bits
     )
 
     f.write(linea)
     
-    print(linea)
+    print("Duty cycle:", duty_cycle, "| Voltage:", voltage_volts)
     
     sleep(0.01)
     
-    duty_cycle = duty_cycle+10
+    #duty_cycle = duty_cycle+10
     
 print("experiment end")
 f.close()
-duty_cycle = 0
+
+duty_cycle = 50
 d = duty_cycle*1024/100
 pwm_red.duty(int(d))
 pwm_blue.duty(int(d))
 pwm_green.duty(int(d))
 
 print("file saved as:", file_name)
-
-
-
-
-
-
